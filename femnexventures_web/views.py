@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import ServiceCategory, Service
@@ -37,3 +37,9 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'Successfully logged out.')
     return redirect('femnexventures_web:login')
+
+def purchase_detail(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+    return render(request, 'femnexventures_web/purchase_detail.html', {
+        'service': service
+    })

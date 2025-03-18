@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<style>
+    .purchase-detail {
+        background: var(--card-bg);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--card-border);
+    }
+
+    .service-image-large {
+        width: 100%;
+        height: 300px;
+        object-fit: contain;
+        background: #f8fafc;
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+
+    .service-info {
+        padding: 2rem;
+    }
+
+    .service-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+    }
+
+    .service-description {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .price-tag {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
+
+    .purchase-form {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--card-border);
+    }
+
+    .quantity-input {
+        max-width: 100px;
+        margin-right: 1rem;
+    }
+
+    .checkout-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+    }
+
+    .service-meta-detail {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+        background: var(--secondary);
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="purchase-detail">
+        <div class="row">
+            <div class="col-md-6">
+                {% for image in service.images.all %}
+                    {% if forloop.first %}
+                        <img src="{{ image.image.url }}" class="service-image-large" alt="{{ service.name }}">
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-md-6">
+                <div class="service-info">
+                    <h1 class="service-name">{{ service.name }}</h1>
+                    <div class="service-meta-detail">
+                        <span class="meta-item">
+                            <i class="fas fa-tag me-2"></i>{{ service.category.name }}
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-box me-2"></i>Stock: {{ service.available_stock }}
+                        </span>
+                    </div>
+                    <p class="service-description">{{ service.description }}</p>
+                    <div class="price-tag">${{ service.price_per_unit }}</div>
+                    
+                    <form class="purchase-form" method="post">
+                        {% csrf_token %}
+                        <div class="d-flex align-items-center mb-4">
+                            <input type="number" name="quantity" value="1" min="1" max="{{ service.available_stock }}"
+                                class="form-control quantity-input" required>
+                            <button type="submit" class="checkout-btn">
+                                <i class="fas fa-shopping-cart me-2"></i>Proceed to Checkout
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

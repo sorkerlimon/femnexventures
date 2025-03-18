@@ -167,18 +167,24 @@
 .purchase-btn {
     width: 100%;
     background: var(--primary);
-    color: white;
+    color: white !important;
     border: none;
     padding: 0.75rem;
     border-radius: 0.75rem;
     font-weight: 600;
     font-size: 0.875rem;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
 }
 
 .purchase-btn:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
+    color: white !important;
+    text-decoration: none;
 }
 
 /* Dark Mode */
