@@ -19,8 +19,6 @@ env/
 *.pyo
 __pycache__
 db.sqlite3
-/static/
-/media/
 
 # VSCode settings (if using VSCode)
 .vscode/
