@@ -3,38 +3,33 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
-<style>
-.service-image {
-    width: 100%;
-    height: 80px; /* Fixed height */
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-</style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <!-- Hero Section -->
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold mb-3">Femnex Ventures</h1>
-        <p class="lead text-muted">Professional Business Services for Your Success</p>
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="hero-title">Femnex Ventures</h1>
+        <p class="hero-subtitle">Premium Account Services for Digital Success</p>
     </div>
+</section>
 
+<div class="container">
     <!-- Services Section -->
     <div class="services-container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="h4 mb-0">Our Services</h2>
+        <div class="services-header">
+            <h2 class="services-title">Premium Accounts</h2>
             <div class="service-filters">
-                <button class="btn btn-outline-primary btn-sm me-2">All</button>
-                <button class="btn btn-outline-primary btn-sm me-2">Popular</button>
-                <button class="btn btn-outline-primary btn-sm">New</button>
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Popular</button>
+                <button class="filter-btn">New</button>
             </div>
         </div>
 
-        <div class="row g-3">
+        <div class="row g-4">
             {% for service in services %}
-            <div class="col-4 col-md-3 col-lg-2">
+            {% if service.service_type == 'account_sale' %}
+            <div class="col-6 col-md-4 col-lg-3">
                 <div class="service-card">
                     <div class="service-card-header">
                         {% for image in service.images.all %}
@@ -52,10 +47,13 @@
                         </div>
                     </div>
                     <div class="service-card-footer">
-                        <button class="purchase-btn">Purchase Now</button>
+                        <button class="purchase-btn">
+                            <i class="fas fa-shopping-cart me-2"></i>Purchase Now
+                        </button>
                     </div>
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
         </div>
     </div>

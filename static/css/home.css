@@ -1,37 +1,112 @@
-.services-container {
-    background: #fff;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+/* Modern Color Scheme */
+:root {
+    --primary: #7c3aed;
+    --primary-dark: #6d28d9;
+    --secondary: #f4f5f7;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --success: #10b981;
+    --card-bg: #ffffff;
+    --card-border: #e5e7eb;
+    --badge-bg: #fee2e2;
+    --badge-text: #ef4444;
 }
 
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    padding: 4rem 0;
+    margin-bottom: 3rem;
+    color: white;
+    border-radius: 0 0 2rem 2rem;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #fff, #e2e8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Services Container */
+.services-container {
+    background: var(--secondary);
+    border-radius: 1.5rem;
+    padding: 2rem;
+}
+
+.services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.services-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Filter Buttons */
+.service-filters {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    background: white;
+    border: 1px solid var(--card-border);
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Service Cards */
 .service-card {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    background: var(--card-bg);
+    border-radius: 1rem;
     overflow: hidden;
     transition: all 0.3s ease;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    border: 1px solid var(--card-border);
 }
 
 .service-card:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
 }
 
 .service-card-header {
     position: relative;
-    height: 80px;
+    height: 140px;
     overflow: hidden;
+    background: #f8fafc;
 }
 
 .service-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    object-fit: contain;
+    padding: 1rem;
+    transition: transform 0.5s ease;
 }
 
 .service-card:hover .service-image {
@@ -40,132 +115,119 @@
 
 .service-badge {
     position: absolute;
-    top: 4px;
-    right: 4px;
-    background: #6c5ce7;
-    color: white;
-    padding: 1px 4px;
-    border-radius: 3px;
-    font-size: 0.6rem;
-    font-weight: 500;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
 }
 
 .service-card-body {
-    padding: 0.5rem;
-    flex-grow: 1;
+    padding: 1rem;
 }
 
 .service-title {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 0.25rem;
-    color: #2d3436;
-    line-height: 1.2;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
 }
 
 .service-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
 }
 
 .service-price {
-    font-weight: 600;
-    color: #6c5ce7;
-    font-size: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--primary);
 }
 
 .service-category {
-    font-size: 0.6rem;
-    color: #636e72;
-    background: #f5f6fa;
-    padding: 1px 4px;
-    border-radius: 3px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: var(--secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
 }
 
 .service-card-footer {
-    padding: 0.35rem 0.5rem;
-    border-top: 1px solid #e0e0e0;
-    display: flex;
-    justify-content: center;
+    padding: 1rem;
+    border-top: 1px solid var(--card-border);
 }
 
 .purchase-btn {
-    background: #6c5ce7;
+    width: 100%;
+    background: var(--primary);
     color: white;
     border: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    font-size: 0.7rem;
-    font-weight: 500;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
     transition: all 0.3s ease;
-    width: 100%;
 }
 
 .purchase-btn:hover {
-    background: #5b4cc4;
+    background: var(--primary-dark);
     transform: translateY(-1px);
 }
 
-.service-filters .btn {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
-}
-
-/* Dark mode support */
+/* Dark Mode */
 @media (prefers-color-scheme: dark) {
-    .services-container {
-        background: #1a1b1e;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .service-card {
-        background: #1a1b1e;
-        border-color: #2d2e32;
-    }
-
-    .service-title {
-        color: #e9ecef;
-    }
-
-    .service-category {
-        background: #2d2e32;
-        color: #e9ecef;
-    }
-
-    .service-card-footer {
-        border-top-color: #2d2e32;
-    }
-
-    .purchase-btn {
-        background: #5b4cc4;
-    }
-
-    .purchase-btn:hover {
-        background: #4a3db3;
-    }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .services-container {
-        padding: 0.75rem;
+    :root {
+        --secondary: #1f2937;
+        --text-primary: #f9fafb;
+        --text-secondary: #9ca3af;
+        --card-bg: #111827;
+        --card-border: #374151;
     }
 
     .service-card-header {
-        height: 60px;
+        background: #1a1f2e;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 3rem 0;
+        border-radius: 0 0 1.5rem 1.5rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .services-container {
+        padding: 1rem;
     }
 
     .service-filters {
         display: none;
     }
 
-    .service-card-body {
-        padding: 0.35rem;
+    .service-card-header {
+        height: 120px;
     }
 
     .service-title {
-        font-size: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .service-price {
+        font-size: 1rem;
     }
 } 
