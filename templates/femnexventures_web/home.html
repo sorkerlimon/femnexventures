@@ -1,45 +1,63 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<style>
+.service-image {
+    width: 100%;
+    height: 80px; /* Fixed height */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Welcome to Femnex Ventures</h1>
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Femnex Ventures</h1>
+        <p class="lead text-muted">Professional Business Services for Your Success</p>
+    </div>
 
-<section class="mb-5">
-    <h2 class="mb-4">Service Categories</h2>
-    <div class="row">
-        {% for category in categories %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    {% if category.image %}
-                        <img src="{{ category.image.url }}" class="card-img-top" alt="{{ category.name }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h3 class="card-title">{{ category.name }}</h3>
+    <!-- Services Section -->
+    <div class="services-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 mb-0">Our Services</h2>
+            <div class="service-filters">
+                <button class="btn btn-outline-primary btn-sm me-2">All</button>
+                <button class="btn btn-outline-primary btn-sm me-2">Popular</button>
+                <button class="btn btn-outline-primary btn-sm">New</button>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            {% for service in services %}
+            <div class="col-4 col-md-3 col-lg-2">
+                <div class="service-card">
+                    <div class="service-card-header">
+                        {% for image in service.images.all %}
+                            {% if forloop.first %}
+                                <img src="{{ image.image.url }}" class="service-image" alt="{{ service.name }}">
+                            {% endif %}
+                        {% endfor %}
+                        <div class="service-badge">New</div>
+                    </div>
+                    <div class="service-card-body">
+                        <h3 class="service-title">{{ service.name }}</h3>
+                        <div class="service-meta">
+                            <span class="service-price">${{ service.price_per_unit }}</span>
+                            <span class="service-category">{{ service.category.name }}</span>
+                        </div>
+                    </div>
+                    <div class="service-card-footer">
+                        <button class="purchase-btn">Purchase Now</button>
                     </div>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</section>
-
-<section>
-    <h2 class="mb-4">Featured Services</h2>
-    <div class="row">
-        {% for service in services %}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    {% for image in service.images.all %}
-                        {% if forloop.first %}
-                            <img src="{{ image.image.url }}" class="card-img-top" alt="{{ service.name }}">
-                        {% endif %}
-                    {% endfor %}
-                    <div class="card-body">
-                        <h3 class="card-title">{{ service.name }}</h3>
-                        <p class="card-text">{{ service.description }}</p>
-                        <p class="card-text"><strong>Price: ${{ service.price_per_unit }}</strong></p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</section>
+</div>
 {% endblock %} 

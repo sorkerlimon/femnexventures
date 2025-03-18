@@ -16,6 +16,8 @@
     background: #ffffff;
     border-radius: 16px;
     padding: 2rem;
+    border: 1px solid #000000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-text {
@@ -168,6 +170,7 @@
 @media (prefers-color-scheme: dark) {
     .login-card {
         background: #1a1b1e;
+        border: 1px solid #ffffff;
     }
 
     .welcome-text h4 {
