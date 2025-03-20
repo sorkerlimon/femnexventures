@@ -2,131 +2,136 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-<style>
-    .purchase-detail {
-        background: var(--card-bg);
-        border-radius: 1.5rem;
-        padding: 2rem;
-        margin-top: 2rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--card-border);
-    }
-
-    .service-image-large {
-        width: 100%;
-        height: 300px;
-        object-fit: contain;
-        background: #f8fafc;
-        border-radius: 1rem;
-        padding: 1rem;
-    }
-
-    .service-info {
-        padding: 2rem;
-    }
-
-    .service-name {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 1rem;
-    }
-
-    .service-description {
-        color: var(--text-secondary);
-        margin-bottom: 1.5rem;
-        line-height: 1.6;
-    }
-
-    .price-tag {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 1rem;
-    }
-
-    .purchase-form {
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--card-border);
-    }
-
-    .quantity-input {
-        max-width: 100px;
-        margin-right: 1rem;
-    }
-
-    .checkout-btn {
-        background: var(--primary);
-        color: white;
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: 0.75rem;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .checkout-btn:hover {
-        background: var(--primary-dark);
-        transform: translateY(-1px);
-    }
-
-    .service-meta-detail {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .meta-item {
-        background: var(--secondary);
-        padding: 0.5rem 1rem;
-        border-radius: 0.75rem;
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/purchase_detail.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="purchase-detail">
-        <div class="row">
-            <div class="col-md-6">
-                {% for image in service.images.all %}
-                    {% if forloop.first %}
-                        <img src="{{ image.image.url }}" class="service-image-large" alt="{{ service.name }}">
+<div class="purchase-page">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'femnexventures_web:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">{{ service.category.name }}</a></li>
+                <li class="breadcrumb-item active">{{ service.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="purchase-detail">
+            <!-- Top Card Section -->
+            <div class="purchase-top">
+                <!-- Image -->
+                <div class="image-container">
+                    {% if service.images.all %}
+                        <img src="{{ service.images.first.image.url }}" alt="{{ service.name }}" class="service-image">
+                    {% else %}
+                        <div class="no-image-placeholder">
+                            <i class="fas fa-image"></i>
+                            <p>No image</p>
+                        </div>
                     {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-md-6">
-                <div class="service-info">
+                </div>
+
+                <!-- Purchase Info -->
+                <div class="purchase-info">
                     <h1 class="service-name">{{ service.name }}</h1>
-                    <div class="service-meta-detail">
-                        <span class="meta-item">
-                            <i class="fas fa-tag me-2"></i>{{ service.category.name }}
+                    
+                    <div class="meta-tags">
+                        <span class="meta-tag">
+                            <i class="fas fa-tag"></i>
+                            {{ service.category.name }}
                         </span>
-                        <span class="meta-item">
-                            <i class="fas fa-box me-2"></i>Stock: {{ service.available_stock }}
+                        <span class="meta-tag">
+                            <i class="fas fa-box"></i>
+                            Stock: {{ service.available_stock }}
                         </span>
                     </div>
-                    <p class="service-description">{{ service.description }}</p>
-                    <div class="price-tag">${{ service.price_per_unit }}</div>
-                    
-                    <form class="purchase-form" method="post">
-                        {% csrf_token %}
-                        <div class="d-flex align-items-center mb-4">
-                            <input type="number" name="quantity" value="1" min="1" max="{{ service.available_stock }}"
-                                class="form-control quantity-input" required>
-                            <button type="submit" class="checkout-btn">
-                                <i class="fas fa-shopping-cart me-2"></i>Proceed to Checkout
+
+                    <div class="price-controls">
+                        <div class="price-tag">${{ service.price_per_unit }}</div>
+                        <div class="quantity-controls">
+                            <button type="button" class="quantity-btn" onclick="updateQuantity(-1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="{{ service.available_stock }}" onchange="updatePrice()">
+                            <button type="button" class="quantity-btn" onclick="updateQuantity(1)">
+                                <i class="fas fa-plus"></i>
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="description-section">
+                <h2 class="section-title">Description</h2>
+                <div class="service-description">
+                    {{ service.description }}
+                </div>
+
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        Instant Delivery
+                    </li>
+                    <li class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        24/7 Support
+                    </li>
+                    <li class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        Secure Payment
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Checkout Section -->
+            <div class="checkout-section">
+                <div class="total-price">
+                    <span class="total-label">Total Amount</span>
+                    <span class="total-value" id="total-price">${{ service.price_per_unit }}</span>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" id="quantity-input" value="1">
+                    <button type="submit" class="checkout-btn">
+                        <i class="fas fa-lock"></i>
+                        Proceed to Checkout
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const unitPrice = parseFloat('{{ service.price_per_unit }}');
+    const maxStock = parseInt('{{ service.available_stock }}');
+
+    window.updateQuantity = function(change) {
+        const quantityInput = document.getElementById('quantity');
+        const currentValue = parseInt(quantityInput.value) || 1;
+        const newValue = Math.max(1, Math.min(currentValue + change, maxStock));
+        
+        quantityInput.value = newValue;
+        updatePrice();
+    }
+
+    window.updatePrice = function() {
+        const quantity = parseInt(document.getElementById('quantity').value) || 1;
+        const validQuantity = Math.max(1, Math.min(quantity, maxStock));
+        
+        if (quantity !== validQuantity) {
+            document.getElementById('quantity').value = validQuantity;
+        }
+        
+        document.getElementById('quantity-input').value = validQuantity;
+        const total = (unitPrice * validQuantity).toFixed(2);
+        document.getElementById('total-price').textContent = '$' + total;
+    }
+
+    updatePrice();
+});
+</script>
 {% endblock %} 

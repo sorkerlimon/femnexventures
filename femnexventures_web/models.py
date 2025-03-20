@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator
+import uuid
 
 class CustomUserManager(BaseUserManager):
     """
@@ -33,6 +34,7 @@ class CustomUser(AbstractUser):
     Custom user model that uses email as the unique identifier
     for authentication instead of username.
     """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None  # Remove username field
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('first name'), max_length=150)
@@ -61,6 +63,7 @@ class CustomUser(AbstractUser):
         return f"{self.first_name} {self.last_name}"
 
 class ServiceCategory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('category name'), max_length=100, unique=True)
     image = models.ImageField(_('category image'), upload_to="category_images/", blank=True, null=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
@@ -81,6 +84,7 @@ class Service(models.Model):
         ('account_creation', _('Account Creation')),
     ]
     
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('service name'), max_length=100, unique=True)
     description = models.TextField(_('description'), blank=True, null=True)
     category = models.ForeignKey(
@@ -117,6 +121,7 @@ class Service(models.Model):
         return f"{self.name} ({self.get_service_type_display()})"
 
 class ServiceImage(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     service = models.ForeignKey(
         Service, 
         verbose_name=_('service'),
@@ -142,6 +147,7 @@ class Order(models.Model):
         ('cancelled', _('Cancelled')),
     ]
     
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(
         CustomUser, 
         verbose_name=_('user'),
