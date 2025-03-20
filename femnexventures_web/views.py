@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.http import Http404
 from .models import ServiceCategory, Service
+import uuid
 
 # Create your views here.
 
 def home_view(request):
     categories = ServiceCategory.objects.all()
-    services = Service.objects.all()[:6]  # Show first 6 services
+    services = Service.objects.all().prefetch_related('images')[:6]  # Show first 6 services with optimized image loading
     context = {
         'categories': categories,
         'services': services,
@@ -39,7 +41,13 @@ def logout_view(request):
     return redirect('femnexventures_web:login')
 
 def purchase_detail(request, service_id):
-    service = get_object_or_404(Service, id=service_id)
-    return render(request, 'femnexventures_web/purchase_detail.html', {
-        'service': service
-    })
+    try:
+        # Convert string UUID to UUID object
+        service_uuid = uuid.UUID(str(service_id))
+        service = get_object_or_404(Service, id=service_uuid)
+        return render(request, 'femnexventures_web/purchase_detail.html', {
+            'service': service
+        })
+    except ValueError:
+        # Handle invalid UUID format
+        raise Http404("Invalid service ID format")

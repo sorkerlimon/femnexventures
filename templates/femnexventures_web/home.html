@@ -32,11 +32,14 @@
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="service-card">
                     <div class="service-card-header">
-                        {% for image in service.images.all %}
-                            {% if forloop.first %}
-                                <img src="{{ image.image.url }}" class="service-image" alt="{{ service.name }}">
-                            {% endif %}
-                        {% endfor %}
+                        {% if service.images.all %}
+                            <img src="{{ service.images.first.image.url }}" class="service-image" alt="{{ service.name }}">
+                        {% else %}
+                            <div class="no-image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <p>No image available</p>
+                            </div>
+                        {% endif %}
                         <div class="service-badge">New</div>
                     </div>
                     <div class="service-card-body">
@@ -47,7 +50,7 @@
                         </div>
                     </div>
                     <div class="service-card-footer">
-                        <a href="{% url 'femnexventures_web:purchase_detail' service.id %}" class="purchase-btn">
+                        <a href="{% url 'femnexventures_web:purchase_detail' service_id=service.id %}" class="purchase-btn">
                             <i class="fas fa-shopping-cart me-2"></i>Purchase Now
                         </a>
                     </div>
